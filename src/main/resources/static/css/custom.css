@@ -1,0 +1,86 @@
+body {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-family: cursive;
+}
+.container{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+a{
+	text-decoration: none;
+	color: white
+}
+.btn-edit a{
+	color: black;
+}
+
+
+.btn-edit{
+	border-radius: 5px;
+	background-color: yellow;
+	border: 1px solid yellow;
+	padding: 5px
+}
+.btn-delete{
+	border-radius: 5px;
+	background-color: red;
+	color: white;
+	border: 1px solid red;
+	padding: 5px
+}
+.btn-add{
+	border-radius: 5px;
+	background-color: blue;
+	color: white;
+	border: 1px solid blue;
+	padding: 5px
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+th{
+	background-color: olive;
+	color: white
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+.error {
+		color: #ff0000;
+	}
+.container-reg-btn{
+	display: flex;
+	justify-content: center;
+}
+.btn-register{
+	border-radius: 5px;
+	background-color: green;
+	color: white;
+	border: 1px solid green;
+	padding: 5px
+}
+.btn-goback{
+	border-radius: 5px;
+	background-color: blue;
+	color: white;
+	border: 1px solid blue;
+	padding: 5px
+}
+.container-success-btn{
+	display: flex;
+	flex-direction:column;
+	justify-content: center;
+}
