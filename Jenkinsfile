@@ -2,13 +2,14 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "your-dockerhub-username/spring-boot-mvc-crud"
+        IMAGE_NAME = 'nikhilsolankhi/mvccrud'
+        IMAGE_TAG = 'latest'
     }
 
     stages {
-        stage('Clone Repository') {
+        stage('Checkout Source Code') {
             steps {
-                git 'https://github.com/nikhil-solankhi/spring-boot-mvc-crud.git'
+                git branch: 'main', url: 'https://github.com/nikhil-solankhi/spring-boot-mvc-crud.git'
             }
         }
 
@@ -20,21 +21,32 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $DOCKER_IMAGE .'
-            }
-        }
-
-        stage('Push to Docker Hub') {
-            steps {
-                withDockerRegistry([credentialsId: 'docker-hub-credentials']) {
-                    sh 'docker push $DOCKER_IMAGE'
+                script {
+                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
                 }
             }
         }
 
-        stage('Deploy Container') {
+        stage('Login to Docker Hub') {
             steps {
-                sh 'docker run -d -p 8080:8080 $DOCKER_IMAGE'
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'DOCKER_CREDENTIALS', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
+                    }
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
+            }
+        }
+
+        stage('Deploy Application') {
+            steps {
+                sh "docker stop mvccrud || true && docker rm mvccrud || true"
+                sh "docker run -d -p 8090:8090 --name mvccrud ${IMAGE_NAME}:${IMAGE_TAG}"
             }
         }
     }
